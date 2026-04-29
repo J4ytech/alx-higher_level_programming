@@ -31,6 +31,4 @@ This project focuses on error handling in Python using `try`, `except`, `else`, 
 | `101-safe_function.py` | Executes a function safely and prints error to `stderr` on failure. |
 
 ## Author
-**Joseph Agaba** ```
-
-
+**Joseph Agaba**
