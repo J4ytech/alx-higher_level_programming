@@ -1,0 +1,24 @@
+Import the function:
+>>> text_indentation = __import__('5-text_indentation').text_indentation
+
+Simple Case:
+    >>> text_indentation("Hello. Is it me? Yes: it is.")
+    Hello.
+    <blank line>
+    Is it me?
+    <blank line>
+    Yes:
+    <blank line>
+    it is.
+
+Checking for leading/trailing spaces:
+    >>> text_indentation("Sentence one.   Sentence two?")
+    Sentence one.
+    <blank line>
+    Sentence two?
+
+Error - not a string:
+    >>> text_indentation(123)
+    Traceback (most recent call last):
+        ...
+    TypeError: text must be a string

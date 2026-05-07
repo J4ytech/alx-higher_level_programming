@@ -1,0 +1,46 @@
+===============================
+How to use the add_integer task
+===============================
+
+First, we need to import the function from our module:
+>>> add_integer = __import__('0-add_integer').add_integer
+
+1. Basic Addition
+------------------
+The function takes two numbers and adds them.
+If only one number is given, the second defaults to 98:
+
+>>> add_integer(1, 2)
+3
+
+>>> add_integer(100, -2)
+98
+
+>>> add_integer(2)
+100
+
+2. Floats are Casted
+--------------------
+If you provide a float, it should be converted to an integer before the addition:
+
+>>> add_integer(100.3, -2)
+98
+
+>>> add_integer(2.9, 0.9)
+2
+
+3. Errors for Wrong Types
+------------------------
+If something that isn't an integer or a float is provided, the function will raise a TypeError with a message
+
+Testing for 'b' being a string:
+>>> add_integer(4, "School")
+Traceback (most recent call last):
+    ...
+TypeError: b must be an integer
+
+Testing for 'a' being None:
+>>> add_integer(None)
+Traceback (most recent call last):
+    ...
+TypeError: a must be an integer
