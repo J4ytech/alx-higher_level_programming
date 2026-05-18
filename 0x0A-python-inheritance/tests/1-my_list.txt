@@ -1,0 +1,63 @@
+# Load the class
+>>> MyList = __import__('1-my_list').MyList
+
+# Test 1: Basic usage - normal list with mixed order
+>>> my_list = MyList()
+>>> my_list.append(3)
+>>> my_list.append(1)
+>>> my_list.append(2)
+>>> my_list.print_sorted()
+[1, 2, 3]
+
+# Test 2: Make sure the original list is NOT modified after print_sorted
+>>> my_list = MyList()
+>>> my_list.append(3)
+>>> my_list.append(1)
+>>> my_list.append(2)
+>>> my_list.print_sorted()
+[1, 2, 3]
+>>> print(my_list)
+[3, 1, 2]
+
+# Test 3: Already sorted list - should print the same
+>>> my_list = MyList()
+>>> my_list.append(1)
+>>> my_list.append(2)
+>>> my_list.append(3)
+>>> my_list.print_sorted()
+[1, 2, 3]
+
+# Test 4: Single element
+>>> my_list = MyList()
+>>> my_list.append(5)
+>>> my_list.print_sorted()
+[5]
+
+# Test 5: Empty list
+>>> my_list = MyList()
+>>> my_list.print_sorted()
+[]
+
+# Test 6: List with negative numbers
+>>> my_list = MyList()
+>>> my_list.append(-1)
+>>> my_list.append(-5)
+>>> my_list.append(-3)
+>>> my_list.print_sorted()
+[-5, -3, -1]
+
+# Test 7: List with duplicate numbers
+>>> my_list = MyList()
+>>> my_list.append(2)
+>>> my_list.append(2)
+>>> my_list.append(1)
+>>> my_list.print_sorted()
+[1, 2, 2]
+
+# Test 8: List with positive and negative numbers
+>>> my_list = MyList()
+>>> my_list.append(-1)
+>>> my_list.append(0)
+>>> my_list.append(1)
+>>> my_list.print_sorted()
+[-1, 0, 1]
