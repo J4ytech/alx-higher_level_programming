@@ -9,8 +9,8 @@ class Rectangle(Base):
 
     def __init__(self, width, height, x=0, y=0, id=None):
         """
-        Initialize a new Rectangle.
-        
+        Initialize a Rectangle.
+
         Args:
             width (int): The width of the rectangle.
             height (int): The height of the rectangle.
@@ -23,10 +23,44 @@ class Rectangle(Base):
         self.height = height
         self.x = x
         self.y = y
-    
+
     def area(self):
         """Return the area of the Rectangle."""
         return self.width * self.height
+
+    def display(self):
+        """Prints in stdout the Rectangle instance with #, accounting for x and y"""
+        for y in range(self.y):
+            print()
+        
+        for row in range(self.height):
+            print(" " * self.x + "#" * self.width)
+
+    def __str__(self):
+        """Returns the string representation of Rectangle."""
+        return "[Rectangle] ({}) {}/{} - {}/{}".format(self.id, self.x, self.y, self.width, self.height)
+    
+    def update(self, *args):
+        """Update the Rectangle attributes using no-keyword arguments."""
+        # If args exists and has at least 1 item
+        if args and len(args) >= 1:
+            self.id = args[0]
+        
+        # If args exists and has at least 2 items
+        if args and len(args) >= 2:
+            self.width = args[1]
+            
+        # If args exists and has at least 3 items
+        if args and len(args) >= 3:
+            self.height = args[2]
+            
+        # If args exists and has at least 4 items
+        if args and len(args) >= 4:
+            self.x = args[3]
+            
+        # If args exists and has at least 5 items
+        if args and len(args) >= 5:
+            self.y = args[4]
 
     @property
     def width(self):
