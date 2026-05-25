@@ -1,79 +1,27 @@
 #!/usr/bin/python3
-"""This module defines the Rectangle class that inherits from Base."""
-
+"""Rectangle module."""
 from models.base import Base
 
 
 class Rectangle(Base):
-    """A class representing a rectangle, inheriting from Base."""
+    """Defines a Rectangle class that inherits from Base."""
 
     def __init__(self, width, height, x=0, y=0, id=None):
-        """
-        Initialize a Rectangle.
-
-        Args:
-            width (int): The width of the rectangle.
-            height (int): The height of the rectangle.
-            x (int): The x coordinate. Defaults to 0.
-            y (int): The y coordinate. Defaults to 0.
-            id (int): The identity of the rectangle. Defaults to None.
-        """
+        """Initialize a new Rectangle."""
         super().__init__(id)
         self.width = width
         self.height = height
         self.x = x
         self.y = y
 
-    def area(self):
-        """Return the area of the Rectangle."""
-        return self.width * self.height
-
-    def display(self):
-        """Prints in stdout the Rectangle instance with #, accounting for x and y"""
-        for y in range(self.y):
-            print()
-        
-        for row in range(self.height):
-            print(" " * self.x + "#" * self.width)
-
-    def __str__(self):
-        """Returns the string representation of Rectangle."""
-        return "[Rectangle] ({}) {}/{} - {}/{}".format(self.id, self.x, self.y, self.width, self.height)
-    
-    def update(self, *args, **kwargs):
-        """Update the Rectangle attributes using no-keyword arguments."""
-        # If args exists and has at least 1 item
-        if args and len(args) >= 1:
-            self.id = args[0]
-        
-        # If args exists and has at least 2 items
-        if args and len(args) >= 2:
-            self.width = args[1]
-            
-        # If args exists and has at least 3 items
-        if args and len(args) >= 3:
-            self.height = args[2]
-            
-        # If args exists and has at least 4 items
-        if args and len(args) >= 4:
-            self.x = args[3]
-            
-        # If args exists and has at least 5 items
-        if args and len(args) >= 5:
-            self.y = args[4]
-        
-        #Otherwise, if args is empty, use the kwargs dictionary
-        for key, value in kwargs.items():
-            setattr(self, key, value)
-
     @property
     def width(self):
-        """Get the width of the rectangle."""
+        """Get the width of the Rectangle."""
         return self.__width
 
     @width.setter
     def width(self, value):
-        """Set the width of the rectangle."""
+        """Set the width of the Rectangle."""
         if type(value) is not int:
             raise TypeError("width must be an integer")
         if value <= 0:
@@ -82,12 +30,12 @@ class Rectangle(Base):
 
     @property
     def height(self):
-        """Get the height of the rectangle."""
+        """Get the height of the Rectangle."""
         return self.__height
 
     @height.setter
     def height(self, value):
-        """Set the height of the rectangle."""
+        """Set the height of the Rectangle."""
         if type(value) is not int:
             raise TypeError("height must be an integer")
         if value <= 0:
@@ -121,3 +69,45 @@ class Rectangle(Base):
         if value < 0:
             raise ValueError("y must be >= 0")
         self.__y = value
+
+    def area(self):
+        """Return the area of the Rectangle."""
+        return self.width * self.height
+
+    def display(self):
+        """Print the Rectangle using the # character."""
+        print("\n" * self.y, end="")
+        for _ in range(self.height):
+            print(" " * self.x + "#" * self.width)
+
+    def update(self, *args, **kwargs):
+        """Update the Rectangle attributes using *args and **kwargs."""
+        if args and len(args) > 0:
+            if len(args) >= 1:
+                self.id = args[0]
+            if len(args) >= 2:
+                self.width = args[1]
+            if len(args) >= 3:
+                self.height = args[2]
+            if len(args) >= 4:
+                self.x = args[3]
+            if len(args) >= 5:
+                self.y = args[4]
+        else:
+            for key, value in kwargs.items():
+                setattr(self, key, value)
+
+    def to_dictionary(self):
+        """Return the dictionary representation of the Rectangle."""
+        return {
+            "id": self.id,
+            "width": self.width,
+            "height": self.height,
+            "x": self.x,
+            "y": self.y
+        }
+
+    def __str__(self):
+        """Return the string representation of the Rectangle."""
+        return "[Rectangle] ({}) {}/{} - {}/{}".format(
+            self.id, self.x, self.y, self.width, self.height)
