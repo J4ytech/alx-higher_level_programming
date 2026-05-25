@@ -40,7 +40,7 @@ class Rectangle(Base):
         """Returns the string representation of Rectangle."""
         return "[Rectangle] ({}) {}/{} - {}/{}".format(self.id, self.x, self.y, self.width, self.height)
     
-    def update(self, *args):
+    def update(self, *args, **kwargs):
         """Update the Rectangle attributes using no-keyword arguments."""
         # If args exists and has at least 1 item
         if args and len(args) >= 1:
@@ -61,6 +61,10 @@ class Rectangle(Base):
         # If args exists and has at least 5 items
         if args and len(args) >= 5:
             self.y = args[4]
+        
+        #Otherwise, if args is empty, use the kwargs dictionary
+        for key, value in kwargs.items():
+            setattr(self, key, value)
 
     @property
     def width(self):
