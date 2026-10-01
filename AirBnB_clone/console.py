@@ -3,6 +3,7 @@
 
 import cmd
 import re
+import json
 from models import storage
 from models.base_model import BaseModel
 from models.user import User
@@ -130,7 +131,7 @@ class HBNBCommand(cmd.Cmd):
     def do_update(self, arg):
         """Update an instance"""
 
-        args = arg.split()
+        args = arg.split(None, 3)
 
         if len(args) == 0:
             print("** class name missing **")
@@ -150,6 +151,24 @@ class HBNBCommand(cmd.Cmd):
             print("** no instance found **")
             return
 
+        # Check if third argument is a dictionary
+        if len(args) > 2 and args[2].startswith('{'):
+            try:
+                # Parse dictionary from string
+                dict_str = args[2]
+                # Replace single quotes with double quotes for JSON parsing
+                dict_str = dict_str.replace("'", '"')
+                attr_dict = json.loads(dict_str)
+                
+                obj = storage.all()[key]
+                for attr_name, attr_value in attr_dict.items():
+                    setattr(obj, attr_name, attr_value)
+                obj.save()
+                return
+            except (json.JSONDecodeError, ValueError):
+                pass
+
+        # Single attribute update
         if len(args) == 2:
             print("** attribute name missing **")
             return
@@ -159,7 +178,6 @@ class HBNBCommand(cmd.Cmd):
             return
 
         obj = storage.all()[key]
-
         attr_name = args[2]
         attr_value = args[3].strip('"')
 
@@ -182,9 +200,11 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         
+        # Task 11: all()
         if method_name == "all":
             self.do_all(class_name)
         
+        # Task 12: count()
         elif method_name == "count":
             count = 0
             for key in storage.all().keys():
@@ -192,16 +212,65 @@ class HBNBCommand(cmd.Cmd):
                     count += 1
             print(count)
         
+        # Task 13: show(<id>)
         elif method_name == "show":
             obj_id = args.strip('"\'')
             self.do_show(f"{class_name} {obj_id}")
         
+        # Task 14: destroy(<id>)
         elif method_name == "destroy":
             obj_id = args.strip('"\'')
             self.do_destroy(f"{class_name} {obj_id}")
         
+        # Task 15 & 16: update(<id>, <attr>, <value>) or update(<id>, <dict>)
         elif method_name == "update":
-            self.do_update(f"{class_name} {args}")
+            # Parse arguments: could be "id", "attr", "value" or "id", {dict}
+            # Split by comma and quote carefully
+            parts = re.split(r',\s*', args)
+            
+            if len(parts) < 2:
+                print("** instance id missing **")
+                return
+            
+            obj_id = parts[0].strip('"\'')
+            
+            # Check if second argument is a dictionary (Task 16)
+            if len(parts) == 2 and parts[1].strip().startswith('{'):
+                try:
+                    # Parse dictionary
+                    dict_str = parts[1].strip()
+                    dict_str = dict_str.replace("'", '"')
+                    attr_dict = json.loads(dict_str)
+                    
+                    key = f"{class_name}.{obj_id}"
+                    if key not in storage.all():
+                        print("** no instance found **")
+                        return
+                    
+                    obj = storage.all()[key]
+                    for attr_name, attr_value in attr_dict.items():
+                        setattr(obj, attr_name, attr_value)
+                    obj.save()
+                    return
+                except (json.JSONDecodeError, ValueError):
+                    pass
+            
+            # Task 15: Single attribute update
+            if len(parts) < 3:
+                print("** attribute name missing **")
+                return
+            
+            attr_name = parts[1].strip('"\'')
+            attr_value = parts[2].strip('"\'')
+            
+            key = f"{class_name}.{obj_id}"
+            if key not in storage.all():
+                print("** no instance found **")
+                return
+            
+            obj = storage.all()[key]
+            setattr(obj, attr_name, attr_value)
+            obj.save()
         
         else:
             print(f"*** Unknown syntax: {line}")
